@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS AGAS 2026 | Registration</title>
+    <style>
+        :root { --sci-blue: #00e5ff; --dark-bg: #050a14; }
+        body {
+            background-color: var(--dark-bg);
+            background-image: linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #e0e0e0; font-family: 'Segoe UI', sans-serif;
+            display: flex; flex-direction: column; align-items: center; padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border: 1px solid var(--sci-blue); padding: 30px;
+            width: 100%; max-width: 700px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+        }
+        h2 { text-align: center; color: var(--sci-blue); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        label { font-size: 11px; color: var(--sci-blue); display: block; margin-bottom: 5px; text-transform: uppercase; }
+        input, select, textarea {
+            width: 100%; background: rgba(0,0,0,0.6); border: 1px solid #333;
+            color: white; padding: 12px; border-radius: 4px; box-sizing: border-box; font-size: 14px;
+        }
+        .sports-box { 
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; 
+            padding: 15px; background: rgba(0, 229, 255, 0.03); border: 1px solid #222;
+        }
+        button {
+            width: 100%; margin-top: 25px; padding: 15px; background: transparent;
+            color: var(--sci-blue); border: 2px solid var(--sci-blue);
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px;
+        }
+        button:hover { background: var(--sci-blue); color: black; box-shadow: 0 0 20px var(--sci-blue); }
+        .req { color: #ff4444; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>CS AAGAZ 2026</h2>
+    <form id="regForm">
+        <div class="grid">
+            <div><label>Enrollment Number <span class="req">*</span></label><input type="text" id="enrollment" required></div>
+            <div><label>Full Name <span class="req">*</span></label><input type="text" id="name" required></div>
+        </div>
+
+        <div class="grid">
+            <div>
+                <label>Gender <span class="req">*</span></label>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option>Male</option><option>Female</option><option>Other</option>
+                </select>
+            </div>
+            <div><label>WhatsApp Number <span class="req">*</span></label><input type="tel" id="phone" placeholder="10 Digits" required></div>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 15px;">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" required>
+        </div>
+
+        <div class="grid">
+            <div>
+                <label>Course <span class="req">*</span></label>
+                <select id="course" required>
+                    <option value="">Select Course</option>
+                    <option>B.Sc.</option><option>M.Sc./MCA</option><option>Ph.D.</option>
+                </select>
+            </div>
+            <div>
+                <label>Year <span class="req">*</span></label>
+                <select id="year" required>
+                    <option value="">Select Year</option>
+                    <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 15px;"><label>Department <span class="req">*</span></label><input type="text" id="dept" placeholder="e.g. Computer Science" required></div>
+        <div style="margin-bottom: 15px;"><label>Residential Address <span class="req">*</span></label><textarea id="address" rows="2" required></textarea></div>
+        
+        <label>Select Sports (Min 1, Max 3) <span class="req">*</span></label>
+        <div class="sports-box">
+            <label><input type="checkbox" name="sport" value="Cricket"> Cricket</label>
+            <label><input type="checkbox" name="sport" value="Football"> Football</label>
+            <label><input type="checkbox" name="sport" value="Volleyball"> Volleyball</label>
+            <label><input type="checkbox" name="sport" value="Badminton"> Badminton</label>
+            <label><input type="checkbox" name="sport" value="Chess"> Chess</label>
+            <label><input type="checkbox" name="sport" value="Carrom"> Carrom</label>
+        </div>
+
+        <button type="submit" id="submitBtn">FINALIZE REGISTRATION</button>
+    </form>
+</div>
+
+<script>
+    // PASTE YOUR GOOGLE WEB APP URL HERE
+    const WEB_APP_URL = "YOUR_DEPLOYED_URL_HERE";
+
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const phone = document.getElementById('phone').value.trim();
+        const sports = Array.from(document.querySelectorAll('input[name="sport"]:checked')).map(cb => cb.value);
+
+        if (!/^[0-9]{10}$/.test(phone)) {
+            alert("Please enter a valid 10-digit WhatsApp number.");
+            return;
+        }
+        if(sports.length === 0 || sports.length > 3) {
+            alert("Please select between 1 and 3 sports.");
+            return;
+        }
+
+        const data = {
+            enrollment: document.getElementById('enrollment').value,
+            name: document.getElementById('name').value,
+            gender: document.getElementById('gender').value,
+            email: document.getElementById('email').value,
+            phone: phone,
+            course: document.getElementById('course').value,
+            year: document.getElementById('year').value,
+            dept: document.getElementById('dept').value,
+            address: document.getElementById('address').value,
+            sports: sports.join(", ")
+        };
+
+        btn.innerText = "SAVING TO MASTER LIST...";
+        btn.disabled = true;
+
+        fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+        .then(() => {
+            alert("Registration Success! All data centralized for CS Aagaz 2026.");
+            document.getElementById('regForm').reset();
+        })
+        .finally(() => {
+            btn.innerText = "FINALIZE REGISTRATION";
+            btn.disabled = false;
+        });
+    });
+</script>
+</body>
+</html>
+
